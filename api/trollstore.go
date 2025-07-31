@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func TrollstoreHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[trollstore] Request from %s with params: %s", r.RemoteAddr, r.URL.RawQuery)
 
 	ipaURL := r.URL.Query().Get("ipa_url")

@@ -38,7 +38,7 @@ const manifestTemplate = `<?xml version="1.0" encoding="UTF-8"?>
 </dict>
 </plist>`
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func ManifestHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[manifest] Request from %s with params: %s", r.RemoteAddr, r.URL.RawQuery)
 
 	ipaURL := r.URL.Query().Get("ipa_url")

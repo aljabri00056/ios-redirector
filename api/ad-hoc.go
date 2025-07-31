@@ -7,7 +7,7 @@ import (
 	"net/url"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func AdHocHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[ad_hoc] Request from %s with params: %s", r.RemoteAddr, r.URL.RawQuery)
 
 	ipaURL := r.URL.Query().Get("ipa_url")
