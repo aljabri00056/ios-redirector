@@ -13,6 +13,7 @@ func AdHocHandler(w http.ResponseWriter, r *http.Request) {
 	ipaURL := r.URL.Query().Get("ipa_url")
 	bundleID := r.URL.Query().Get("bundle_id")
 	bundleVersion := r.URL.Query().Get("bundle_version")
+	bundleShortVersion := r.URL.Query().Get("bundle_short_version")
 	title := r.URL.Query().Get("title")
 
 	if ipaURL == "" {
@@ -44,6 +45,11 @@ func AdHocHandler(w http.ResponseWriter, r *http.Request) {
 		url.QueryEscape(bundleID),
 		url.QueryEscape(bundleVersion),
 		url.QueryEscape(title))
+
+	// Add bundle_short_version to manifest URL if provided
+	if bundleShortVersion != "" {
+		manifestURL += fmt.Sprintf("&bundle_short_version=%s", url.QueryEscape(bundleShortVersion))
+	}
 
 	itmsURL := fmt.Sprintf("itms-services://?action=download-manifest&url=%s",
 		url.QueryEscape(manifestURL))

@@ -28,6 +28,8 @@ const manifestTemplate = `<?xml version="1.0" encoding="UTF-8"?>
                 <string>%s</string>
                 <key>bundle-version</key>
                 <string>%s</string>
+                <key>bundle-short-version-string</key>
+                <string>%s</string>
                 <key>kind</key>
                 <string>software</string>
                 <key>title</key>
@@ -44,6 +46,7 @@ func ManifestHandler(w http.ResponseWriter, r *http.Request) {
 	ipaURL := r.URL.Query().Get("ipa_url")
 	bundleID := r.URL.Query().Get("bundle_id")
 	bundleVersion := r.URL.Query().Get("bundle_version")
+	bundleShortVersion := r.URL.Query().Get("bundle_short_version")
 	title := r.URL.Query().Get("title")
 
 	if ipaURL == "" {
@@ -63,9 +66,14 @@ func ManifestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	manifest := fmt.Sprintf(manifestTemplate, ipaURL, bundleID, bundleVersion, title)
+	// If bundle_short_version is not provided, use bundle_version as fallback for backward compatibility
+	if bundleShortVersion == "" {
+		bundleShortVersion = bundleVersion
+	}
 
-	log.Printf("[manifest] Generated manifest for bundle_id: %s, title: %s, bundle_version: %s", bundleID, title, bundleVersion)
+	manifest := fmt.Sprintf(manifestTemplate, ipaURL, bundleID, bundleVersion, bundleShortVersion, title)
+
+	log.Printf("[manifest] Generated manifest for bundle_id: %s, title: %s, bundle_version: %s, bundle_short_version: %s", bundleID, title, bundleVersion, bundleShortVersion)
 
 	w.Header().Set("Content-Type", "application/xml")
 	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
